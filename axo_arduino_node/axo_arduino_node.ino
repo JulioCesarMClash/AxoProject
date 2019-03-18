@@ -8,6 +8,9 @@
 Servo myservo;
 //servo angle
 int angle = 0;
+//FinDeCarrera
+int buttonback_1 = 40;
+int buttonback_2 = 41; 
 //Crea un nodo en ros llamado n
 ros::NodeHandle n;
 //Message containing the sensor data to be published
@@ -41,8 +44,6 @@ UltraSonicDistanceSensor distanceSensor3(26, 27);
 UltraSonicDistanceSensor distanceSensor4(28, 29);
 UltraSonicDistanceSensor distanceSensor5(30, 31);  
 UltraSonicDistanceSensor distanceSensor6(32, 33);
-UltraSonicDistanceSensor distanceSensor7(34, 35);
-UltraSonicDistanceSensor distanceSensor8(38, 39);
 
 // >>>>>>>>>>>>>>>>>> FUNCIONES <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 void SpeedsCallback(const std_msgs::Float32MultiArray&msg){
@@ -107,6 +108,9 @@ n.advertise(pub_sensors);
 n.subscribe(robot_Speeds);
 
 msg_sensors.data_length = 8;
+//Configuracion de fin de carrera
+pinMode(buttonback_1,INPUT);
+pinMode(buttonback_2,INPUT);
 
 //Configuracion de los pines de salida -- Control Motores
 pinMode(m_M1A, OUTPUT);
@@ -130,13 +134,13 @@ void loop(){
     delay(2);
     playa_sensor_readings[3]=distanceSensor4.measureDistanceCm();
     delay(2);
-    playa_sensor_readings[4]=distanceSensor1.measureDistanceCm();
+    playa_sensor_readings[4]=distanceSensor5.measureDistanceCm();
     delay(2);
-    playa_sensor_readings[5]=distanceSensor2.measureDistanceCm();
+    playa_sensor_readings[5]=distanceSensor6.measureDistanceCm();
     delay(2);
-    playa_sensor_readings[6]=distanceSensor3.measureDistanceCm();
-    delay(2);
-    playa_sensor_readings[7]=distanceSensor4.measureDistanceCm();
+    
+    playa_sensor_readings[6] = digitalRead(buttonback_1);
+    playa_sensor_readings[7] = digitalRead(buttonback_2);
 
     msg_sensors.data = playa_sensor_readings;
     pub_sensors.publish(&msg_sensors);
