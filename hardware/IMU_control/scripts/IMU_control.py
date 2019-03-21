@@ -33,7 +33,7 @@ def degree_convertion(arr):
 def main():
 	print("Initializig imu publisher :)")
 	rospy.init_node('ImuValuesPub')
-	pub= rospy.Publisher('/azcatl/Hardware/fusion_pose',Float32MultiArray, queue_size=1)
+	pub= rospy.Publisher('/axo/hardware/imu_fusion_pose',Float32MultiArray, queue_size=1)
 	loop=rospy.Rate(10)
 
 	print("Using settings file " + SETTINGS_FILE + ".ini")
