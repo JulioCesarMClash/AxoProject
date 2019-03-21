@@ -1,12 +1,12 @@
 #include<ros/ros.h>
-#include<std_msgs/Int32.h>
+#include<std_msgs/Int32MultiArray.h>
 #include<opencv2/opencv.hpp>
 #include<iostream>
 
 using namespace std;
 using namespace ros;
 
-int value;
+int valueBlack;
 
 //Variables 
 int maxV_black=54;
@@ -18,7 +18,7 @@ int main(int argc, char  **argv)
 	cout<<"Initializing node..."<<endl;
         init(argc, argv,"vision_test");
         NodeHandle node("~");
-	Publisher pub_vision = node.advertise<std_msgs::Int32>("/axo/vision/vision_test",1000);
+	Publisher pub_vision = node.advertise<std_msgs::Int32MultiArray>("/axo/vision/vision_test",1000);
         Rate loop_rate(10);
 	
 	cv::VideoCapture vidCap;
@@ -33,7 +33,8 @@ int main(int argc, char  **argv)
 
 	while(ok())
         {
-		std_msgs::Int32 num;
+		std_msgs::Int32MultiArray num;
+		num.data.clear();
 		
 		if(!vidCap.grab()){
 			std::cout<<"Cant grab frames";
@@ -122,20 +123,20 @@ int main(int argc, char  **argv)
 
 		if(cont.size()>0){
 			if(MaxX<205){
-				value=1;
+				valueBlack=1;
 			}else if(MaxX<437){
-				value=2;
+				valueBlack=2;
 			}else{
-				value=3;
+				valueBlack=3;
 			}
 			
 		}
 		else{
-			value=0;
+			valueBlack=0;
 		}
 			
 
-		num.data = value;
+		num.data[0] = valueBlack;
 		pub_vision.publish(num);
 		spinOnce();
                 loop_rate.sleep();
