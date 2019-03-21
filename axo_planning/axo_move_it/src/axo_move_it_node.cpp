@@ -1,6 +1,6 @@
 #include <ros/ros.h>
 #include <std_msgs/Float32MultiArray.h>
-
+#include <std_msgs/Int32MultiArray.h>
 
 
 using namespace std;
@@ -8,19 +8,19 @@ using namespace ros;
 
 float mi,md,angle;
 
-void IMUValueCallback(const std_msgs::Float32MultiArray &msg)
+void visionValueCallback(const std_msgs::Int32MultiArray &msg)
 {
-	if (msg.data[2]>1.0 && msg.data[2]<60.0)
+	if (msg.data[0] == 1)
 	{	
 		mi=-0.65;
 		md=0.29;
 	}
-	else if (msg.data[2]>2.0 && msg.data[2]<61.0)
+	else if (msg.data[0] == 2)
         {       
-                mi=0.85;
-		md=-0.85;
+                mi=0.99;
+		md=-0.99;
         }
-	else if(msg.data[2]>1.0 && msg.data[2]<60.0)
+	else if(msg.data[0] == 3)
         {       
                 mi=-0.29;
 		md=0.65;
@@ -28,7 +28,7 @@ void IMUValueCallback(const std_msgs::Float32MultiArray &msg)
 	else 
 	{
 		mi=0.0;
-		md=0.0;
+		md=-0.0;
 	}
 
 }
@@ -38,10 +38,10 @@ int main(int argc, char  **argv)
         cout<<"Initializing motors_publisher node..."<<endl;
         init(argc, argv,"axo_move_it");
         NodeHandle node("~");
-	Subscriber sub = node.subscribe("/axo/hardware/imu_fusion_pose",1,visionValueCallback);
+	Subscriber sub = node.subscribe("/axo/vision/vision_test",1000,visionValueCallback);
 	Publisher pub = node.advertise<std_msgs::Float32MultiArray>("/axo/hardware/motor_speeds",1000);
 	Rate loop_rate(10);
-	angle = 0.05;
+	angle = 0.09;
         while(ok())
         {
                 //if(md==0.0 && mi == 0.0)
