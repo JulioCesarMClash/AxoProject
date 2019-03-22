@@ -11,17 +11,27 @@ int angle = 0;
 //FinDeCarrera
 int buttonback_1 = 40;
 int buttonback_2 = 41; 
-//Crea un nodo en ros llamado n
-ros::NodeHandle n;
+// Initialize sensor that uses digital pins trigger and echo. 
+UltraSonicDistanceSensor distanceSensor1(22, 23);  
+UltraSonicDistanceSensor distanceSensor2(24, 25);
+UltraSonicDistanceSensor distanceSensor3(26, 27);
+UltraSonicDistanceSensor distanceSensor4(28, 29);
+UltraSonicDistanceSensor distanceSensor5(30, 31);  
+UltraSonicDistanceSensor distanceSensor6(32, 33);
+
 //Message containing the sensor data to be published
 std_msgs::Float32MultiArray msg_sensors;
+
+//Crea un nodo en ros llamado n
+ros::NodeHandle n;
+
 //Array de sensores
 float playa_sensor_readings[8] = {0,0,0,0,0,0,0,0};
 //----------------------------------------
 //Asignación de los pines del ARDUINO-MEGA2560
 //Barredora
 int barredora_a = 5;
-int barredora_b = 48;
+int barredora_b = 49;
 //Motores
 int m_M1A = 2; //Motor1_A
 int M1_pwm = 9; //Motor1_pwm
@@ -37,13 +47,6 @@ int M2A=0; //Valor de dirección del Motor2_A
 int M2B=0; //Valor de dirección del Motor2_B
 int pwm_1 = 0; //Valor de dirección del Motor_1
 int pwm_2 = 0; //Valor de dirección del Motor_2
-// Initialize sensor that uses digital pins trigger and echo. 
-UltraSonicDistanceSensor distanceSensor1(22, 23);  
-UltraSonicDistanceSensor distanceSensor2(24, 25);
-UltraSonicDistanceSensor distanceSensor3(26, 27);
-UltraSonicDistanceSensor distanceSensor4(28, 29);
-UltraSonicDistanceSensor distanceSensor5(30, 31);  
-UltraSonicDistanceSensor distanceSensor6(32, 33);
 
 // >>>>>>>>>>>>>>>>>> FUNCIONES <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 void SpeedsCallback(const std_msgs::Float32MultiArray&msg){
@@ -54,34 +57,34 @@ angle = int(180 * msg.data[2]);
 if (msg.data[0] > 0 && msg.data[1]>0){
 M1A = 0;
 M1B = 1;
-pwm_1 = int(255 * msg.data[0]);
+pwm_1 = int(512 * msg.data[0]);
 M2A = 0;
 M2B = 1;
-pwm_2 = int(255 * msg.data[1]);
+pwm_2 = int(512 * msg.data[1]);
 }
 else if (msg.data[0] < 0 && msg.data[1] < 0){
 M1A = 1;
 M1B = 0;
-pwm_1 = int(-255 * msg.data[0]);
+pwm_1 = int(-512 * msg.data[0]);
 M2A = 1;
 M2B = 0;
-pwm_2 = int(-255 * msg.data[1]);
+pwm_2 = int(-512 * msg.data[1]);
 }
 else if (msg.data[0] > 0 && msg.data[1] < 0){
 M1A = 0;
 M1B = 1;
-pwm_1 = int(255 * msg.data[0]);
+pwm_1 = int(512 * msg.data[0]);
 M2A = 1;
 M2B = 0;
-pwm_2 = int(-255 * msg.data[1]);
+pwm_2 = int(-512 * msg.data[1]);
 }
 else if (msg.data[0] < 0 && msg.data[1]>0){
 M1A = 1;
 M1B = 0;
-pwm_1 = int(-255 * msg.data[0]);
+pwm_1 = int(-512 * msg.data[0]);
 M2A = 0;
 M2B = 1;
-pwm_2 = int(255 * msg.data[1]);
+pwm_2 = int(512 * msg.data[1]);
 }
 else { //ALTO
 M1A = 0;
@@ -147,7 +150,7 @@ void loop(){
     n.spinOnce();
     myservo.write(angle);       
     //Barredora
-    analogWrite(barredora_a,200);
+    analogWrite(barredora_a,255);
     digitalWrite(barredora_b,LOW);
     //Motores
     digitalWrite(m_M1A,M1A);
