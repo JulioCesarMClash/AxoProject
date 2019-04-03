@@ -5,4 +5,6 @@
     </node>
     <node name="vision_test"        pkg="vision_test"           type="vision_test_node.cpp">
     </node>
+    <node name="axo_move_it"        pkg="axo_move_it"           type="axo_move_it_node.cpp">
+    </node>
 </launch>
