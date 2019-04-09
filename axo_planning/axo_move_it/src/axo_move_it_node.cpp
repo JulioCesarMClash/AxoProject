@@ -1,34 +1,32 @@
 #include <ros/ros.h>
 #include <std_msgs/Float32MultiArray.h>
 #include <std_msgs/Int32MultiArray.h>
-
-
+#include <time.h>
+#include <unistd.h>
 using namespace std;
 using namespace ros;
 
 float mi,md,angle;
+	
+enum indices{LataX,LataY,DepositoX,DepositoY,azulIzq,azulF,azulDer};
 
 void visionValueCallback(const std_msgs::Int32MultiArray &msg)
 {
-	if (msg.data[0] == 1)
-	{	
-		mi=-0.65;
-		md=0.29;
+	if(msg.data[LataX]>0){
+		if(msg.data[LataX]<230){
+			md=-0.99;
+			mi=0.005;
+		}else if(msg.data[LataX]<422){
+			mi=-0.99;
+			md=0.99;
+		}else{
+			md=0.005;
+			mi=0.99;
+		}
 	}
-	else if (msg.data[0] == 2)
-        {       
-                mi=0.99;
-		md=-0.99;
-        }
-	else if(msg.data[0] == 3)
-        {       
-                mi=-0.29;
-		md=0.65;
-        }
-	else 
-	{
-		mi=0.0;
-		md=-0.0;
+	else{
+		mi=-0.005;
+		md=0.005;
 	}
 
 }
@@ -59,7 +57,3 @@ int main(int argc, char  **argv)
                 loop_rate.sleep();
 	        }//From while loop
 }
-
-
-
-            

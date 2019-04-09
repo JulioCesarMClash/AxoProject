@@ -230,7 +230,7 @@ int main(int argc, char  **argv){
 		limFmin=height;
 
 		//Cargando configuración previa, si existe el archivo "config.txt":
-		file.open("config.txt",std::ios::in);
+		file.open("/home/pi/Desktop/config.txt",std::ios::in);
 		std::string line;
 		int *ptr_int;
 		if(file.is_open()){
@@ -519,7 +519,7 @@ int main(int argc, char  **argv){
 				cv::line(limIMG,pointC,pointD,verde2,2);
 
 				fin=frame.cols;
-				file.open("AD.txt",std::ios::out | std::ios::trunc);
+				file.open("/home/pi/Desktop/AD.txt",std::ios::out | std::ios::trunc);
 				file<<limFmax<<" "<<limFmin<<std::endl;
 				for(int i=limFmax;i<limFmin;i++){
 					for(int j=0;j<limIMG.cols;j++){
@@ -543,7 +543,7 @@ int main(int argc, char  **argv){
 				cv::line(limIMG,limA,limB,violeta,1);
 
 				inicio=0;	
-				file.open("AI.txt",std::ios::out | std::ios::trunc);
+				file.open("/home/pi/Desktop/AI.txt",std::ios::out | std::ios::trunc);
 				file<<limFmax<<" "<<limFmin<<std::endl;
 				for(int i=limFmax;i<limFmin;i++){
 					for(int j=0;j<limIMG.cols;j++){
@@ -566,7 +566,7 @@ int main(int argc, char  **argv){
 				cv::line(limIMG,limC,limD,verde2,1);
 				cv::line(limIMG,limA,limB,violeta,1);
 
-				file.open("AF.txt",std::ios::out | std::ios::trunc);
+				file.open("/home/pi/Desktop/AF.txt",std::ios::out | std::ios::trunc);
 				file<<limFmax<<" "<<limFmin<<std::endl;
 				for(int i=limFmax;i<limFmin;i++){
 					for(int j=0;j<limIMG.cols;j++){
@@ -585,7 +585,7 @@ int main(int argc, char  **argv){
 				file.close();
 				
 				//Respaldo de variables:	
-				file.open("config.txt",std::ios::out | std::ios::trunc);
+				file.open("/home/pi/Desktop/config.txt",std::ios::out | std::ios::trunc);
 				file<<"GaussKS:"<<kernelSizeGauss<<std::endl;
 				file<<"GaussD:"<<deviationGauss<<std::endl;
 				file<<"BlkMaxV:"<<black_maxV<<std::endl;
@@ -635,7 +635,7 @@ int main(int argc, char  **argv){
 	}
 
 	//Lectura de variables:
-	file.open("config.txt",std::ios::in);
+	file.open("/home/pi/Desktop/config.txt",std::ios::in);
 	std::string line;
 	int *ptr_int;
 	if(file.is_open()){
@@ -653,17 +653,17 @@ int main(int argc, char  **argv){
 	file.close();
 
 	//Lectura de "regiones":
-	if(!cargarRegion("AI.txt",&regAI)){
+	if(!cargarRegion("/home/pi/Desktop/AI.txt",&regAI)){
 		std::cout<<"ERROR. Archivo \"AI.txt\" no encontrado."<<std::endl;
 		return -1;
 	}
 	
-	if(!cargarRegion("AD.txt",&regAD)){
+	if(!cargarRegion("/home/pi/Desktop/AD.txt",&regAD)){
 		std::cout<<"ERROR. Archivo \"AD.txt\" no encontrado."<<std::endl;
 		return -1;
 	}
 	
-	if(!cargarRegion("AF.txt",&regAF)){
+	if(!cargarRegion("/home/pi/Desktop/AF.txt",&regAF)){
 		std::cout<<"ERROR. Archivo \"AF.txt\" no encontrado."<<std::endl;
 		return -1;
 	}
